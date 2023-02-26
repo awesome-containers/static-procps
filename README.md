@@ -25,8 +25,7 @@ docker.io/awesomecontainers/static-procps:latest-slim
 docker.io/awesomecontainers/static-procps:4.0.3-slim
 ```
 
-* <https://www.gnu.org/software/procps/>
-* <https://git.savannah.gnu.org/cgit/procps.git>
+* <https://gitlab.com/procps-ng/procps>
 
 [Bash]: https://github.com/awesome-containers/static-bash
 [UPX]: https://upx.github.io/
