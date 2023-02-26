@@ -1,0 +1,23 @@
+# https://github.com/awesome-containers/static-bash
+ARG STATIC_BASH_VERSION=5.2.15
+ARG STATIC_PROCPS_VERSION=3.8
+
+FROM ghcr.io/awesome-containers/static-procps:$STATIC_PROCPS_VERSION AS static-procps
+FROM ghcr.io/awesome-containers/alpine-build-essential:3.17 AS build
+
+WORKDIR /src/procps
+COPY --from=static-procps /bin/ ./
+
+RUN set -xeu; \
+    rm -f bash; \
+    du -hd0 ./; \
+    strip -s -R .comment -R .gnu.version --strip-unneeded ./*; \
+    upx --no-progress --no-color ./*; \
+    upx -t --no-progress --no-color ./*; \
+    chmod -cR 755 ./; \
+    chown -cR 0:0 ./; \
+    ./sysctl --version; ls -lah .; du -hd0 ./
+
+# slim static procps image
+FROM ghcr.io/awesome-containers/static-bash:$STATIC_BASH_VERSION-slim AS static-bash
+COPY --from=build /src/procps/ /bin/
